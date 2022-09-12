@@ -1,35 +1,21 @@
 @import "./base.css";
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   font-weight: normal;
+  background-image: url('../assets/images/head-table.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+h1, h2, h3, h4, h5, p, a, li, span, label, button {
+  font-family: 'Oswald', sans-serif;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
+.rotate-y {
+  transform: rotateY(180deg);
+} 

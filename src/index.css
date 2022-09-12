@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom classes */
+.book-page {
+    @apply rounded-r-xl p-[2rem] absolute w-full h-full top-0 left-0 transition duration-700 ease-in-out;
+}
+.closed-book {
+    @apply ml-auto scale-75 hover:shadow-[-1px_-1px_33px_5px_rgba(0,0,0,0.75)];
+}
+.opened-book {
+    @apply ml-[30%] scale-100 cursor-auto;
+}
