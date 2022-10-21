@@ -10,10 +10,11 @@ const bookHelper = {
         const page6 = document.querySelector('.page6');
 
         if(book.classList.contains('opened-book')) {
+            console.log('heeeloo')
             // set page5 diaply none
             page5.style.display = 'none';
-            // set page6 transform: display initial, rotateY(-145deg) and bg color #D7C6B5
-            page6.style.display = 'flex';
+            // page5.style.transition = 'display 0.5s ease-in-out';
+            // set page6 transform: rotateY(-145deg) and bg color #D7C6B5
             page6.style.transform = 'rotateY(-145deg)';
             page6.style.backgroundColor = '#D7C6B5';
             // Back page 6 to right position and show again page 5
@@ -26,6 +27,11 @@ const bookHelper = {
                 page6.style.backgroundColor = '#E3D1BF';
                 
             }, 700);
+
+            // after 1.5s, set page 6 display initial
+            setTimeout(() => {
+                page6.style.display = 'flex';
+            }, 1000);
         }
     },
 };

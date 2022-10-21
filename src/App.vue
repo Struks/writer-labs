@@ -1,32 +1,15 @@
 <script setup>
 import { RouterView } from "vue-router";
 import BookTitle from "./components/BookTitle.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 
 // Variables
 const bookIsOpen = ref(false);
 const book = ref(null)
 
-// Mounted
-onMounted(() => {
-  // console.log(book.value.children);
-  // const bookPages = book.value.children
-  // setTimeout(() => {
-  //   book.value.classList.remove('closed-book')
-  //   for(let i = 0; i < 3; i++) {
-  //     console.log(bookPages[i].classList);
-  //     bookPages[i].classList.add('book-opened');
-  //   }
-  // }, 1000);
-
-});
-
-
-
 // Methods
 const openBook = () => {
-  // console.log('ref', $ReadableStreamDefaultController);
   if(!bookIsOpen.value)
   bookIsOpen.value = true;
   const bookPages = book.value.children;
@@ -34,7 +17,6 @@ const openBook = () => {
   book.value.classList.add('opened-book');
   setTimeout(() => {
     for(let i = 0; i < bookPages.length; i++) {
-      // console.log(bookPages[i].classList);
       bookPages[i].classList.add('pages-opened');
     }
   });
