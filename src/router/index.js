@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // import HomeView from "../views/HomeView.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
-import UserOwnLibrary from "../views/UserOwnLibrary.vue";
+import UserOwnLabaratory from "../views/UserOwnLabaratory.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,16 +15,22 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: Login,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: "/signup",
       name: "signup",
-      component: Signup
+      component: Signup,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
-      path: "/library",
-      name: "library",
-      component: UserOwnLibrary
+      path: "/labaratory",
+      name: "labaratory",
+      component: UserOwnLabaratory
     },
   ],
 });

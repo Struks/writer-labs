@@ -1,11 +1,14 @@
 <script setup>
-import { reactive, ref, toRef } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
+import { reactive, toRef, inject } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 // modules
 import { bookHelper } from "../helpers/bookHelper";
 // vuelidation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+// inject
+const store = inject('store');
+const router = useRouter();
 
 // Variables
 const loginForm = reactive({
@@ -29,17 +32,25 @@ const vv = useVuelidate(rules, {
   password: toRef(loginForm, "password"),
 });
 
+
 // Methods
 const login = () => {
-  vv.value.$touch();
+  try {
+    // check validation
+    vv.value.$touch();
+    if (vv.value.$invalid) {
+      return;
+    }
+    // login user and navigate to user's library page 
+    store.actions.signIn(loginForm);
+    router.push({ name: 'labaratory' });
 
-  if (vv.value.$invalid) {
-    return;
+  } catch(err) {
+    console.log(err);
   }
-  console.log("login");
 };
 
-// Before Route Leave
+// Before Route Leave 
 onBeforeRouteLeave((to, from, next) => {
   bookHelper.navigateAnimation();
   next();

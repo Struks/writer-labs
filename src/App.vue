@@ -1,7 +1,12 @@
 <script setup>
 import { RouterView } from "vue-router";
 import BookTitle from "./components/BookTitle.vue";
-import { ref } from "vue";
+import { ref, provide } from "vue";
+// store
+import store from '@/store'
+
+// provide
+provide('store', store);
 
 
 // Variables
