@@ -1,0 +1,121 @@
+<script setup>
+//vue
+import { ref, inject } from "vue";
+// router
+import { onBeforeRouteLeave, useRouter } from "vue-router";
+// modules
+import { bookHelper } from "../helpers/bookHelper";
+// vuelidation
+import { useVuelidate } from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+
+const router = useRouter();
+// inject
+const store = inject("store");
+
+// Variables
+const emailForm = ref("");
+
+// Vue validation
+const rules = {
+  email: {
+    email,
+    required,
+  },
+};
+const vv = useVuelidate(rules, {
+  email: emailForm,
+});
+
+// Methods
+const resetPassword = async () => {
+  try {
+    // check validation
+    vv.value.$touch();
+    if (vv.value.$invalid) {
+      return;
+    }
+    // reset password
+    await store.actions.resetPassword(emailForm.value);
+    // navigate to login page
+    router.push({ name: "login" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// Before Route Leave
+onBeforeRouteLeave((to, from, next) => {
+  bookHelper.navigateAnimation();
+  next();
+});
+</script>
+
+<template>
+  <h1 class="rotate-y text-4xl uppercase font-bold text-center">
+    Forgotten password
+  </h1>
+  <form @submit.prevent="resetPassword" class="rotate-y">
+    <label
+      for="email"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      >Email address</label
+    >
+    <input
+      v-model="vv.email.$model"
+      type="text"
+      id="email"
+      class="
+        bg-gray-50
+        border border-gray-300
+        text-gray-900 text-sm
+        rounded-lg
+        focus:ring-blue-500 focus:border-blue-500
+        block
+        w-full
+        p-2.5
+      "
+      placeholder="john.doe@company.com"
+      :class="{ 'border-2 border-[#ff0000]': vv.email.$error }"
+    />
+    <template v-if="vv.email.$dirty">
+      <div v-for="error of vv.email.$errors" :key="error.$message">
+        <div :class="{ 'text-[#ff0000] text-xs pt-0.5': vv.email.$dirty }">
+          {{ error.$message }}
+        </div>
+      </div>
+    </template>
+    <button
+      type="submit"
+      class="
+        mt-6
+        text-[#fff]
+        bg-[#C2400D]
+        hover:bg-[#9A3412]
+        focus:ring-4 focus:outline-none focus:ring-blue-300
+        font-medium
+        rounded-lg
+        text-sm
+        w-full
+        px-5
+        py-2.5
+        text-center
+      "
+      :class="{
+        'cursor-not-allowed opacity-50 disabled:bg-[#C2400D]': vv.$error,
+      }"
+      :disabled="vv.$error"
+    >
+      Reset password
+    </button>
+  </form>
+  <div class="rotate-y text-sm opacity-80 text-center">
+    Back to the
+    <router-link to="/login" class="text-sm opacity-80 underline"
+      > Login page</router-link
+    >
+  </div>
+</template>
+
+<style lang="scss" scoped>
+</style>

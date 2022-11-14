@@ -1,11 +1,14 @@
 <script setup>
-import { reactive, ref, toRef } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
+import { reactive, inject, toRef, computed } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 // modules
 import { bookHelper } from "../helpers/bookHelper";
 // vuelidation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs, minLength } from "@vuelidate/validators";
+// inject
+const store = inject('store');
+const router = useRouter();
 
 // Variables
 const registerForm = reactive({
@@ -51,15 +54,24 @@ const vv = useVuelidate(rules, {
   confirmPassword: toRef(registerForm, "confirmPassword"),
 });
 
-// Methods
-function signup() {
-  vv.value.$touch();
+// Computed
+const curentUser = computed(() => store.state.currentUser);
 
-  if (vv.value.$invalid) {
-    return;
+// Methods
+const signup = async () => {
+  try {
+    // check validation
+    vv.value.$touch();
+    if (vv.value.$invalid) {
+      return;
+    }
+    // register user and navigate to user's library page
+    await store.actions.signUp(registerForm);
+    // router.push({ name: "login" });
+  } catch (err) {
+    console.log(err);
   }
-  console.log("signup");
-}
+};
 
 // Before Route Leave
 onBeforeRouteLeave((to, from, next) => {
@@ -322,7 +334,7 @@ onBeforeRouteLeave((to, from, next) => {
         <input
           v-model="vv.confirmPassword.$model"
           type="password"
-          id="password"
+          id="confirmPassword"
           class="
             bg-gray-50
             border border-gray-300

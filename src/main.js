@@ -15,16 +15,23 @@ import store from './store';
 let app = '';
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
-    if(!app) {
+    if (!app) {
         app = createApp(App);
         app.use(router);
         app.mount("#app");
     }
     console.log('user', user);
+    // is email verified
     if (user) {
-        router.push({ name: 'labaratory' });
         store.actions.fetchCurrentUser(user);
-    } else {
+        router.push({ name: 'labaratory' });
+    }
+    // after sign up user need to verify email
+     else if (!user && window.location.pathname.includes('/signup')) {
+        return
+    }
+    // default opinion is that user is not logged in
+    else {
         router.push({ name: 'login' });
     }
 }

@@ -6,9 +6,10 @@ import { bookHelper } from "../helpers/bookHelper";
 // vuelidation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+
+const router = useRouter();
 // inject
 const store = inject('store');
-const router = useRouter();
 
 // Variables
 const loginForm = reactive({
@@ -34,7 +35,7 @@ const vv = useVuelidate(rules, {
 
 
 // Methods
-const login = () => {
+const login = async  () => {
   try {
     // check validation
     vv.value.$touch();
@@ -42,7 +43,7 @@ const login = () => {
       return;
     }
     // login user and navigate to user's library page 
-    store.actions.signIn(loginForm);
+    await store.actions.signIn(loginForm);
     router.push({ name: 'labaratory' });
 
   } catch(err) {
@@ -131,13 +132,10 @@ onBeforeRouteLeave((to, from, next) => {
             max-w-max
             cursor-pointer
             block
-            text-sm text-gray-300
-            opacity-80
             ml-auto
-            hover:underline hover:opacity-100
           "
         >
-          Forgot?
+        <router-link class="text-sm text-gray-300 opacity-80 hover:underline hover:opacity-100" to="/reset-password">Forgot?</router-link>
         </div>
       </div>
     </div>
