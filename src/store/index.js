@@ -2,6 +2,10 @@ import { reactive } from "vue"
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
+// toasted
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 const router = useRouter();
 
 const state = reactive({
@@ -25,22 +29,22 @@ const actions = {
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
+                // navigate to user's library page 
+                router.push('/labaratory');
             })
             .catch((error) => {
-                console.log('error', error);
                 switch(error.code) {
                     case "auth/user-not-found":
-                        console.log("User not found");
+                        toast.error("User not found");
                         break;
                     case "auth/wrong-password":
-                        console.log("Wrong password");
+                        toast.error("Wrong password");
                         break;
                     default:
-                        console.log("Something went wrong");
+                        toast.error("Something went wrong");
                 }
             });
-
-        state.loader = false;
+        state.loader = false;         
     },
     signOut: async () => {
         const auth = getAuth();
@@ -69,18 +73,15 @@ const actions = {
                 sendEmailVerification(authUser)
                     .then(() => {
                         // Email verification sent!
-                        // todo: create toasted message
-                        console.log('Email verification sent!');
-                        alert('Email verification sent!');
+                        toast.info('Email verification sent!')
                     });
                 console.log("Document written with ID: ", docRef.id);
                 signOut(auth);
             })
             .catch((error) => {
-                console.warn("Error adding document: ", error);
                 // const errorCode = error.code;
-                // const errorMessage = error.message;
-                // ..
+                const errorMessage = error.message;
+                toast.error(errorMessage)
             });
         state.loader = false;
     },
@@ -92,13 +93,13 @@ const actions = {
             .then(() => {
                 // Password reset email sent!
                 // add modal about email sent user info
-                alert('Password reset email sent!');
+                toast.info('Password reset email sent!');
             })
             .catch((error) => {
                 console.warn("Error rest password email", error);
                 // const errorCode = error.code;
-                // const errorMessage = error.message;
-                // ..
+                const errorMessage = error.message;
+                toast.error(errorMessage);
             });
         state.loader = false;
     },
@@ -121,10 +122,10 @@ const actions = {
             mutations.setcurrentUser(user);
 
         } catch(error) {
-            console.log('error', error);
+            console.log('fetchCurrentUser error', error);
         }
 
-        state.loader = true;
+        state.loader = false;
     },
 };
 

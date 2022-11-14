@@ -20,7 +20,7 @@ const bookHelper = {
             // Back page 6 to right position and show again page 5
             setTimeout(() => {
                 // show page 5 again
-                page5.style.display = 'flex';
+                page5.style.display = 'initial';
                 // set page 6 transform: rotateY(-35deg), bg color #E3D1BF and display none
                 page6.style.display = 'none';
                 page6.style.transform = 'rotateY(-35deg)';
@@ -30,7 +30,7 @@ const bookHelper = {
 
             // after 1.5s, set page 6 display initial
             setTimeout(() => {
-                page6.style.display = 'flex';
+                page6.style.display = 'initial';
             }, 1000);
         }
     },

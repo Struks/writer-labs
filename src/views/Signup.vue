@@ -67,7 +67,6 @@ const signup = async () => {
     }
     // register user and navigate to user's library page
     await store.actions.signUp(registerForm);
-    // router.push({ name: "login" });
   } catch (err) {
     console.log(err);
   }

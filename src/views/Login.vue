@@ -1,13 +1,15 @@
 <script setup>
 import { reactive, toRef, inject } from "vue";
-import { onBeforeRouteLeave, useRouter } from "vue-router";
+import { onBeforeRouteLeave } from "vue-router";
 // modules
 import { bookHelper } from "../helpers/bookHelper";
 // vuelidation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+// toasted
+import { useToast } from "vue-toastification";
 
-const router = useRouter();
+const toast = useToast();
 // inject
 const store = inject('store');
 
@@ -42,10 +44,8 @@ const login = async  () => {
     if (vv.value.$invalid) {
       return;
     }
-    // login user and navigate to user's library page 
+    // login action
     await store.actions.signIn(loginForm);
-    router.push({ name: 'labaratory' });
-
   } catch(err) {
     console.log(err);
   }

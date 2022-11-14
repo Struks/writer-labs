@@ -10,6 +10,10 @@ import './index.css'
 import "./assets/main.css";
 // Store
 import store from './store';
+// Toasted
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
 
 
 let app = '';
@@ -18,6 +22,9 @@ onAuthStateChanged(auth, (user) => {
     if (!app) {
         app = createApp(App);
         app.use(router);
+        app.use(Toast, {
+            // ... options
+        });
         app.mount("#app");
     }
     console.log('user', user);

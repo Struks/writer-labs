@@ -1,6 +1,6 @@
 <script setup>
 //  Props
-const props = defineProps({
+defineProps({
     title: String,
     author: String
 })
