@@ -6,10 +6,7 @@ import { bookHelper } from "../helpers/bookHelper";
 // vuelidation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-// toasted
-import { useToast } from "vue-toastification";
 
-const toast = useToast();
 // inject
 const store = inject('store');
 

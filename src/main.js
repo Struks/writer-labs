@@ -27,21 +27,23 @@ onAuthStateChanged(auth, (user) => {
         });
         app.mount("#app");
     }
-    console.log('user', user);
-    // is email verified
     if (user) {
         store.actions.fetchCurrentUser(user);
-        router.push({ name: 'labaratory' });
+        // if location pathname is login, signup or reset-password redirect to labaratory
+        if (['/login', '/signup', '/reset-password'].includes(window.location.pathname)) {
+            router.push({ name: 'labaratory', params: { documents: 'files' } });
+        }
+        // set userVerified to true if email is verified and false if not
+        store.state.userVerified = user.emailVerified;
     }
     // after sign up user need to verify email
-     else if (!user && window.location.pathname.includes('/signup')) {
+    else if (!user && window.location.pathname.includes('/signup')) {
         return
     }
     // default opinion is that user is not logged in
     else {
         router.push({ name: 'login' });
     }
-}
-);
+});
 
 

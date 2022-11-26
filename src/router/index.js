@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from '../store';
 
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
@@ -16,22 +17,16 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: Login,
-      meta: {
-        requiresAuth: true,
-      }
     },
     {
       path: "/signup",
       name: "signup",
       component: Signup,
-      meta: {
-        requiresAuth: true,
-      }
     },
     {
-      path: "/labaratory",
+      path: "/labaratory/:documents(.*)",
       name: "labaratory",
-      component: UserOwnLabaratory
+      component: UserOwnLabaratory,
     },
     {
       path: "/reset-password",
@@ -40,20 +35,13 @@ const router = createRouter({
     }
   ],
 });
-//   // ovo cemo srediti preko firebase quth
+// if user is logged in and try to access login or signup page redirect to labaratory
 // router.beforeEach((to, from, next) => {
-
-
-//   const publicPages = ["/login", "/signup"];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem("user");
-
-//   if (authRequired && !loggedIn) {
-//     return next("/login");  
+//   if (['login', 'signup', 'reset-password'].includes(to.name) && store.state.currentUser) {
+//     next({ name: 'labaratory', params: { documents: 'files' } });
 //   } else {
 //     next();
 //   }
-
 // });
 
 export default router;

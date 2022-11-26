@@ -19,3 +19,10 @@ h1, h2, h3, h4, h5, p, a, li, span, label, button {
 .rotate-y {
   transform: rotateY(180deg);
 } 
+
+
+/* Toasted */
+
+.Vue-Toastification__toast--default.my-custom-toast-class {
+  background-color: #E3D1BF;
+}

@@ -2,6 +2,7 @@ import { reactive } from "vue"
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
+import { getStorage, ref, listAll } from 'firebase/storage';
 // toasted
 import { useToast } from "vue-toastification";
 
@@ -11,6 +12,8 @@ const router = useRouter();
 const state = reactive({
     currentUser: null,
     loader: false,
+    userVerified: null,
+    folders: [],
     // ...
 });
 const mutations = {
@@ -20,17 +23,50 @@ const mutations = {
     setLoader(payload) {
         state.loader = payload;
     },
-    // ...
+    setUserVerified(payload) {
+        state.userVerified = payload;
+    },
+    setFolders(payload) {
+        state.folders = payload;
+    },
 };
 
 const actions = {
+    getFolders: async (uid) => {
+        // get all folders from firebase storage
+        const storage = getStorage();   
+        const listRef = ref(storage, `/${uid}/`);
+        const folders = [];
+        await listAll(listRef).then((res) => {
+            // folders
+            res.prefixes.forEach((folderRef) => {
+                console.log('folderRef', folderRef);
+                folders.push({
+                    name: folderRef.name,
+                    path: folderRef.fullPath,
+                    type: 'folder',
+                });
+            });
+            // // files
+            res.items.forEach((itemRef) => {
+                console.log('itemRef', itemRef);
+
+                // All the items under listRef.
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        mutations.setFolders(folders);
+    },
+        
     signIn: async (payload) => {
         state.loader = true;
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
                 // navigate to user's library page 
-                router.push('/labaratory');
+                router.push('/labaratory/files');
             })
             .catch((error) => {
                 switch(error.code) {
@@ -40,8 +76,6 @@ const actions = {
                     case "auth/wrong-password":
                         toast.error("Wrong password");
                         break;
-                    default:
-                        toast.error("Something went wrong");
                 }
             });
         state.loader = false;         
@@ -49,6 +83,7 @@ const actions = {
     signOut: async () => {
         const auth = getAuth();
         await signOut(auth).then(() => {
+            mutations.setcurrentUser(null);
         }).catch((error) => {
             // An error happened.
             console.log('error', error);
