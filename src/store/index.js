@@ -14,7 +14,7 @@ const state = reactive({
     loader: false,
     userVerified: null,
     folders: [],
-    // ...
+    files: [],
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -29,17 +29,21 @@ const mutations = {
     setFolders(payload) {
         state.folders = payload;
     },
+    setFiles(payload) {
+        state.files = payload;
+    },
 };
 
 const actions = {
-    getFolders: async (uid) => {
-        // get all folders from firebase storage
+    getStorage: async (parentFolder) => {
+        // get all folders and files from firebase storage from specific folder
         const storage = getStorage();   
-        const listRef = ref(storage, `/${uid}/`);
+        const listRef = ref(storage, `/${parentFolder}`);
         const folders = [];
+        const files = [];
         await listAll(listRef).then((res) => {
             // folders
-            res.prefixes.forEach((folderRef) => {
+            res.prefixes.forEach(folderRef => {
                 console.log('folderRef', folderRef);
                 folders.push({
                     name: folderRef.name,
@@ -47,17 +51,21 @@ const actions = {
                     type: 'folder',
                 });
             });
-            // // files
+            // files
             res.items.forEach((itemRef) => {
                 console.log('itemRef', itemRef);
-
-                // All the items under listRef.
+                files.push({
+                    name: itemRef.name,
+                    path: itemRef.fullPath,
+                    type: 'folder',
+                });
             });
         }).catch((error) => {
             console.log(error);
         });
 
         mutations.setFolders(folders);
+        mutations.setFiles(files);
     },
         
     signIn: async (payload) => {

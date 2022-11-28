@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, inject, onMounted, defineProps } from 'vue';
+import { ref, computed, inject, onMounted } from 'vue';
 import { useRoute } from "vue-router";
 //components imports
-import FoldersGrid from './Folders.vue';
+import Directory from './Directory.vue';
 
 const router = useRoute();
 
@@ -75,17 +75,15 @@ const activeTab = (documentKind) => {
 <template>
     <div>
         <h1 v-if="user && user.userName" class="rotate-y text-4xl uppercase font-bold text-center">{{user.userName}}'s library</h1>
-        <div class="rotate-y flex justify-evenly mt-10">
+        <!-- <div class="rotate-y flex justify-evenly mt-10">
             <router-link to="/labaratory/files" @click="activeTab('files')" ><h3 class="text-lg cursor-pointer hover:underline underline-offset-2" :class="{'underline': showFiles}">Files</h3></router-link>
             <router-link to="/labaratory/folders" @click="activeTab('folders')"><h3 class="text-lg cursor-pointer hover:underline underline-offset-2" :class="{'underline': showFolders}">Folders</h3></router-link>
             <router-link to="/labaratory/recent-files" @click="activeTab('recent-files')"><h3 class="text-lg cursor-pointer hover:underline underline-offset-2" :class="{'underline': showRecentFiles}">Recent files</h3></router-link>
-        </div>
+        </div> -->
 
     </div>
     <div class="rotate-y writer-folders-files">
-        <div v-if="showFolders" class="folders-div">
-            <FoldersGrid />
-        </div>
+        <Directory />
     </div>
 </template>
 

@@ -14,6 +14,8 @@ import store from './store';
 import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+// svg icon components (global components)
+import './plugins/global-components';
 
 
 let app = '';
@@ -31,6 +33,7 @@ onAuthStateChanged(auth, (user) => {
         store.actions.fetchCurrentUser(user);
         // if location pathname is login, signup or reset-password redirect to labaratory
         if (['/login', '/signup', '/reset-password'].includes(window.location.pathname)) {
+            console.log('hellooo');
             router.push({ name: 'labaratory', params: { documents: 'files' } });
         }
         // set userVerified to true if email is verified and false if not
@@ -38,10 +41,12 @@ onAuthStateChanged(auth, (user) => {
     }
     // after sign up user need to verify email
     else if (!user && window.location.pathname.includes('/signup')) {
+        console.log('hellooo 2');
         return
     }
     // default opinion is that user is not logged in
     else {
+        console.log('hellooo 3');
         router.push({ name: 'login' });
     }
 });

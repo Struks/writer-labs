@@ -11,7 +11,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/login",
+      redirect: "/labaratory/files",
     },
     {
       path: "/login",
@@ -24,15 +24,20 @@ const router = createRouter({
       component: Signup,
     },
     {
+      path: "/reset-password",
+      name: "reset-password",
+      component: ResetPassword,
+    },
+    // labaratory
+    {
+      path: "/labaratory",
+      redirect: "/labaratory/files",
+    },
+    {
       path: "/labaratory/:documents(.*)",
       name: "labaratory",
       component: UserOwnLabaratory,
     },
-    {
-      path: "/reset-password",
-      name: "reset-password",
-      component: ResetPassword,
-    }
   ],
 });
 // if user is logged in and try to access login or signup page redirect to labaratory
