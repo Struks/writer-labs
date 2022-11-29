@@ -15,6 +15,7 @@ const state = reactive({
     userVerified: null,
     folders: [],
     files: [],
+    selectedFile: null,
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -32,19 +33,36 @@ const mutations = {
     setFiles(payload) {
         state.files = payload;
     },
+    setSelectedFile(payload) {
+        state.selectedFile = payload;
+    },
 };
 
 const actions = {
-    getStorage: async (parentFolder) => {
+    downloadFile: async (file) => {
+        const storage = getStorage();
+        const storageRef = ref(storage, file.path);
+        const url = await storageRef.getDownloadURL();
+        window
+            .open(url, "_blank")
+            .focus();
+    },
+    deleteFile: async (file) => {
+        const storage = getStorage();   
+        const storageRef = ref(storage, file.path);
+        await storageRef.delete();
+        toast.success("File deleted successfully");
+        actions.getFiles();
+    },
+    getStorage: async (path) => {
         // get all folders and files from firebase storage from specific folder
         const storage = getStorage();   
-        const listRef = ref(storage, `/${parentFolder}`);
+        const listRef = ref(storage, `/${path}/Uzalud Nista`);
         const folders = [];
         const files = [];
         await listAll(listRef).then((res) => {
             // folders
             res.prefixes.forEach(folderRef => {
-                console.log('folderRef', folderRef);
                 folders.push({
                     name: folderRef.name,
                     path: folderRef.fullPath,
@@ -53,17 +71,16 @@ const actions = {
             });
             // files
             res.items.forEach((itemRef) => {
-                console.log('itemRef', itemRef);
                 files.push({
                     name: itemRef.name,
                     path: itemRef.fullPath,
-                    type: 'folder',
+                    type: 'file',
                 });
             });
         }).catch((error) => {
             console.log(error);
         });
-
+        // store folders and files in state
         mutations.setFolders(folders);
         mutations.setFiles(files);
     },

@@ -14,8 +14,13 @@ module.exports = {
     extend: {
       transformOrigin: {
         'left-center' : 'left center'
-      }
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    }
+  ],
 }
