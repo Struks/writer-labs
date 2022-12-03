@@ -15,7 +15,7 @@ const bookIsOpen = ref(false);
 const book = ref(null)
 
 // Computed
-const loader = computed(() => store.state.loader);
+const loader = computed(() => store.state.bookPageLoader);
 
 // Methods
 const openBook = () => {

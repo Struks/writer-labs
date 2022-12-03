@@ -41,12 +41,12 @@ const router = createRouter({
   ],
 });
 // if user is logged in and try to access login or signup page redirect to labaratory
-// router.beforeEach((to, from, next) => {
-//   if (['login', 'signup', 'reset-password'].includes(to.name) && store.state.currentUser) {
-//     next({ name: 'labaratory', params: { documents: 'files' } });
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (['login', 'signup', 'reset-password'].includes(to.name) && store.state.currentUser) {
+    next({ name: 'labaratory', params: { documents: 'files' } });
+  } else {
+    next();
+  }
+});
 
 export default router;

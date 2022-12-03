@@ -31,9 +31,10 @@ onAuthStateChanged(auth, (user) => {
     }
     if (user) {
         store.actions.fetchCurrentUser(user);
+        // on init vue istance set currentFullPath from user uid
+        store.state.currentFullPath = user.uid;
         // if location pathname is login, signup or reset-password redirect to labaratory
         if (['/login', '/signup', '/reset-password'].includes(window.location.pathname)) {
-            console.log('hellooo');
             router.push({ name: 'labaratory', params: { documents: 'files' } });
         }
         // set userVerified to true if email is verified and false if not
@@ -41,12 +42,10 @@ onAuthStateChanged(auth, (user) => {
     }
     // after sign up user need to verify email
     else if (!user && window.location.pathname.includes('/signup')) {
-        console.log('hellooo 2');
         return
     }
     // default opinion is that user is not logged in
     else {
-        console.log('hellooo 3');
         router.push({ name: 'login' });
     }
 });

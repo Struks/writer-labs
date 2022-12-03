@@ -2,7 +2,7 @@ import { reactive } from "vue"
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
-import { getStorage, ref, listAll } from 'firebase/storage';
+import { getStorage, ref, listAll, deleteObject, getDownloadURL } from 'firebase/storage';
 // toasted
 import { useToast } from "vue-toastification";
 
@@ -11,18 +11,19 @@ const router = useRouter();
 
 const state = reactive({
     currentUser: null,
-    loader: false,
+    bookPageLoader: false,
     userVerified: null,
     folders: [],
     files: [],
     selectedFile: null,
+    currentFullPath: null,
 });
 const mutations = {
     setcurrentUser(payload) {
         state.currentUser = payload;
     },
-    setLoader(payload) {
-        state.loader = payload;
+    setBookPageLoader(payload) {
+        state.bookPageLoader = payload;
     },
     setUserVerified(payload) {
         state.userVerified = payload;
@@ -36,28 +37,68 @@ const mutations = {
     setSelectedFile(payload) {
         state.selectedFile = payload;
     },
+    setCurrentFullPath(payload) {
+        state.currentFullPath = payload;
+    }
 };
 
 const actions = {
     downloadFile: async (file) => {
         const storage = getStorage();
-        const storageRef = ref(storage, file.path);
-        const url = await storageRef.getDownloadURL();
-        window
-            .open(url, "_blank")
-            .focus();
+        await getDownloadURL(ref(storage, file.path)).then((url) => {
+            console.log('url', url);
+            // This can be downloaded directly:
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = (event) => {
+                const blob = xhr.response;
+            };
+            xhr.open('GET', url);
+            xhr.send();
+
+            // open url in new tab  
+            window.open(url, '_blank');
+
+        }).catch(error => {
+            switch (error.code) {
+                case 'storage/object-not-found':
+                    toast.error('File doesn\'t exist');
+                    break;
+                case 'storage/unauthorized':
+                    toast.error('User doesn\'t have permission to access the object');
+                    break;
+                case 'storage/canceled':
+                    toast.error('User canceled the operation');
+                    break;
+                case 'storage/unknown':
+                    toast.error('Unknown error occurred, inspect the server response')
+                    break;
+            }
+        });
+
+
     },
     deleteFile: async (file) => {
-        const storage = getStorage();   
-        const storageRef = ref(storage, file.path);
-        await storageRef.delete();
-        toast.success("File deleted successfully");
-        actions.getFiles();
+        const storage = getStorage();
+        const desertRef = ref(storage, file.path);
+        try {
+            // Create a reference to the file to delete  
+            await deleteObject(desertRef);
+            toast.success('File deleted successfully');
+            // get parent path folder
+            const parentPath = file.path.split('/').slice(0, -1).join('/');
+            // todo: path ce biti univerzalan za sve fajlove
+            await actions.getStorage(parentPath);
+
+        } catch (err) {
+            toast.error('Error deleting file');
+        }
     },
-    getStorage: async (path) => {
+    getStorage: async () => {
+        // state.bookPageLoader = true;
         // get all folders and files from firebase storage from specific folder
-        const storage = getStorage();   
-        const listRef = ref(storage, `/${path}/Uzalud Nista`);
+        const storage = getStorage();
+        const listRef = ref(storage, `/${state.currentFullPath}/`);
         const folders = [];
         const files = [];
         await listAll(listRef).then((res) => {
@@ -79,14 +120,16 @@ const actions = {
             });
         }).catch((error) => {
             console.log(error);
+            toast.error(e.message);
         });
         // store folders and files in state
         mutations.setFolders(folders);
         mutations.setFiles(files);
+        // state.bookPageLoader = false;
     },
-        
+
     signIn: async (payload) => {
-        state.loader = true;
+        state.bookPageLoader = true;
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
@@ -94,7 +137,7 @@ const actions = {
                 router.push('/labaratory/files');
             })
             .catch((error) => {
-                switch(error.code) {
+                switch (error.code) {
                     case "auth/user-not-found":
                         toast.error("User not found");
                         break;
@@ -103,7 +146,7 @@ const actions = {
                         break;
                 }
             });
-        state.loader = false;         
+        state.bookPageLoader = false;
     },
     signOut: async () => {
         const auth = getAuth();
@@ -115,7 +158,7 @@ const actions = {
         });
     },
     signUp: async (payload) => {
-        state.loader = true;
+        state.bookPageLoader = true;
         const auth = getAuth();
         const db = getFirestore();
         await createUserWithEmailAndPassword(auth, payload.email, payload.password)
@@ -143,11 +186,11 @@ const actions = {
                 const errorMessage = error.message;
                 toast.error(errorMessage)
             });
-        state.loader = false;
+        state.bookPageLoader = false;
     },
     // reset password
     resetPassword: async (email) => {
-        state.loader = true;
+        state.bookPageLoader = true;
         const auth = getAuth();
         await sendPasswordResetEmail(auth, email)
             .then(() => {
@@ -161,12 +204,12 @@ const actions = {
                 const errorMessage = error.message;
                 toast.error(errorMessage);
             });
-        state.loader = false;
+        state.bookPageLoader = false;
     },
 
     // call in main.js to fetch current user from firebase auth and set it to state
     fetchCurrentUser: async (payload) => {
-        state.loader = true;
+        state.bookPageLoader = true;
         const db = getFirestore();
         const q = query(collection(db, "users"), where("email", "==", payload.email));
 
@@ -181,11 +224,11 @@ const actions = {
             });
             mutations.setcurrentUser(user);
 
-        } catch(error) {
+        } catch (error) {
             console.log('fetchCurrentUser error', error);
         }
 
-        state.loader = false;
+        state.bookPageLoader = false;
     },
 };
 

@@ -6,8 +6,8 @@ import { bookHelper } from '../helpers/bookHelper';
 // toasted
 import { useToast } from "vue-toastification";
 // components imports
-import VerifyAccountViewVue from '../components/labaratory/VerifyAccountView.vue';
-import NotVerifyAccountViewVue from '../components/labaratory/NotVerifyAccountView.vue';
+import VerifyAccountView from '../components/labaratory/VerifyAccountView.vue';
+import NotVerifyAccountView from '../components/labaratory/NotVerifyAccountView.vue';
 
 const toast = useToast();
 const router = useRouter();
@@ -43,10 +43,10 @@ onBeforeRouteLeave((to, from, next) => {
     <!-- writer's library -->
 
     <!-- if user account verified -->
-    <VerifyAccountViewVue v-if="userVerified && currentUser" :user="currentUser" />
+    <VerifyAccountView v-if="userVerified && currentUser" :user="currentUser" />
 
     <!-- if user account has not verified -->   
-    <NotVerifyAccountViewVue v-if="!userVerified" />
+    <NotVerifyAccountView v-if="!userVerified" />
     
     <div class="writer-footer">
         <div @click="signOut" class="rotate-y text-sm opacity-80 cursor-pointer max-w-max mr-auto hover:opacity-100 hover:font-bold">Sign Out --></div>
