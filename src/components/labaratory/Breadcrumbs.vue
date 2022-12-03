@@ -42,7 +42,7 @@ const navigateToFolder = async (path) => {
       v-for="breadcrumb in breadcrumbs"
       :key="breadcrumb.fullPath"
       @click="navigateToFolder(breadcrumb.fullPath)"
-      class="text-xs font-serif font-bold cursor-pointer hover:underline"
+      class="text-xs font-serif font-bold cursor-pointer hover:underline underline-offset-2"
     >
       /{{ breadcrumb.name }}
     </li>

@@ -12,6 +12,7 @@ const router = useRouter();
 const state = reactive({
     currentUser: null,
     bookPageLoader: false,
+    // labaratoryLoader: false,
     userVerified: null,
     folders: [],
     files: [],
@@ -25,6 +26,9 @@ const mutations = {
     setBookPageLoader(payload) {
         state.bookPageLoader = payload;
     },
+    // setLabaratoryLoader(payload) {
+    //     state.labaratoryLoader = payload;
+    // },
     setUserVerified(payload) {
         state.userVerified = payload;
     },
@@ -95,7 +99,6 @@ const actions = {
         }
     },
     getStorage: async () => {
-        // state.bookPageLoader = true;
         // get all folders and files from firebase storage from specific folder
         const storage = getStorage();
         const listRef = ref(storage, `/${state.currentFullPath}/`);
@@ -122,10 +125,10 @@ const actions = {
             console.log(error);
             toast.error(e.message);
         });
+        // state.labaratoryLoader = false;
         // store folders and files in state
         mutations.setFolders(folders);
         mutations.setFiles(files);
-        // state.bookPageLoader = false;
     },
 
     signIn: async (payload) => {

@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, inject, computed, ref } from "vue";
 import SvgIcon from "../SvgIcon.vue";
-import FileButtons from "./FileButtons.vue";
 
 const store = inject("store");
 
@@ -9,7 +8,9 @@ const store = inject("store");
 const showButtons = ref(false);
 // mounted
 onMounted(async () => {
+  // store.state.labaratoryLoader = true;
   await store.actions.getStorage();
+  store.state.labaratoryLoader = false;
 });
 
 // Computed
@@ -77,7 +78,7 @@ const deleteFile = async (file) => {
       v-for="(folder, index) in getFolders"
       :key="index"
       @click="getStorage(folder.path)"
-      class="folder cursor-pointer basis-1/5 hover:underline"
+      class="folder cursor-pointer basis-1/5 hover:underline underline-offset-2"
     >
       <svg-icon name="folder" />
       <div class="folder-name font-mono font-semibold leading-5">
@@ -88,7 +89,7 @@ const deleteFile = async (file) => {
       v-for="(file, index) in getFiles"
       :key="index"
       @click="setButtons(file)"
-      class="folder cursor-pointer basis-1/5 relative hover:underline"
+      class="folder cursor-pointer basis-1/5 relative hover:underline underline-offset-2"
     >
       <svg-icon :name="getFileType(file)" title="Click me" />
       <div
