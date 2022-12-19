@@ -29,10 +29,15 @@ const breadcrumbs = computed(() => {
 // Methods
 // call getStorage action from store
 const navigateToFolder = async (path) => {
+  console.log('path', path);
+  // only call api if path is not the same as currentFullPath
+  if(path === store.state.currentFullPath) return;
   // set store currentFullPath to path
   store.state.currentFullPath = path;
   // call api
+  store.state.labaratoryLoader = true;
   await store.actions.getStorage();
+  store.state.labaratoryLoader = false;
 };
 </script>
 

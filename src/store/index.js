@@ -2,7 +2,7 @@ import { reactive } from "vue"
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
-import { getStorage, ref, listAll, deleteObject, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, listAll, deleteObject, uploadBytesResumable, uploadBytes, getDownloadURL } from 'firebase/storage';
 // toasted
 import { useToast } from "vue-toastification";
 
@@ -12,12 +12,13 @@ const router = useRouter();
 const state = reactive({
     currentUser: null,
     bookPageLoader: false,
-    // labaratoryLoader: false,
+    labaratoryLoader: false,
     userVerified: null,
     folders: [],
     files: [],
     selectedFile: null,
     currentFullPath: null,
+    uploadProcess: null, // upload process in %
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -43,14 +44,62 @@ const mutations = {
     },
     setCurrentFullPath(payload) {
         state.currentFullPath = payload;
-    }
+    },
+    setUploadProcess(payload) {
+        state.uploadProcess = payload;
+    },
 };
 
 const actions = {
+    addFolder: async (folderName) => {
+        // Only way to create folder in firebase storage is to upload a file with null value and then delete it
+        const storage = getStorage();
+        const storageRef = ref(storage, `${state.currentFullPath}/${folderName}/${null}`); 
+        // create null file in new folder path 
+        await uploadBytes(storageRef, null).then(() => {
+            toast.success('Folder created successfully');
+            // delete null file
+            deleteObject(storageRef);
+            actions.getStorage(`${state.currentFullPath}`);
+        }).catch((error) => {
+            toast.error(error.message);
+        });
+    },
+    uploadFile: async (file) => {
+        const storage = getStorage();
+        const storageRef = ref(storage, `${state.currentFullPath}/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);  
+        await uploadTask.on('state_changed', (snapshot) => {  
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            state.uploadProcess = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(state.uploadProcess);
+            switch (snapshot.state) {
+                case 'paused':
+                    toast.info('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+            }
+        }, (error) => {
+            // Handle unsuccessful uploads
+            toast.error(error.message);
+        }, () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            mutations.setUploadProcess(null);
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+                toast.success('File uploaded successfully');
+
+                actions.getStorage(state.currentFullPath); 
+            });
+        });
+    },
     downloadFile: async (file) => {
         const storage = getStorage();
         await getDownloadURL(ref(storage, file.path)).then((url) => {
-            console.log('url', url);
             // This can be downloaded directly:
             const xhr = new XMLHttpRequest();
             xhr.responseType = 'blob';
@@ -79,8 +128,6 @@ const actions = {
                     break;
             }
         });
-
-
     },
     deleteFile: async (file) => {
         const storage = getStorage();
@@ -122,7 +169,6 @@ const actions = {
                 });
             });
         }).catch((error) => {
-            console.log(error);
             toast.error(e.message);
         });
         // state.labaratoryLoader = false;

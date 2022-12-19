@@ -10,7 +10,6 @@ const bookHelper = {
         const page6 = document.querySelector('.page6');
 
         if(book.classList.contains('opened-book')) {
-            console.log('heeeloo')
             // set page5 diaply none
             page5.style.display = 'none';
             // page5.style.transition = 'display 0.5s ease-in-out';

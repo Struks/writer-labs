@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, inject, computed, ref } from "vue";
+import { onMounted, inject, computed, ref, watch } from "vue";
 import SvgIcon from "../SvgIcon.vue";
 
 const store = inject("store");
@@ -8,9 +8,7 @@ const store = inject("store");
 const showButtons = ref(false);
 // mounted
 onMounted(async () => {
-  // store.state.labaratoryLoader = true;
   await store.actions.getStorage();
-  store.state.labaratoryLoader = false;
 });
 
 // Computed
@@ -22,9 +20,11 @@ const getSelectedFile = computed(() => store.state.selectedFile);
 // call getStorage action from store
 const getStorage = async (path) => {
   // set store currentFullPath to path
-  store.state.currentFullPath = path;
+  store.state.currentFullPath = path + '/';
   // call api
+  store.state.labaratoryLoader = true;
   await store.actions.getStorage();
+  store.state.labaratoryLoader = false;
 };
 // edit file name by except extention
 const editFileName = (name) => {
@@ -73,7 +73,7 @@ const deleteFile = async (file) => {
 
 
 <template>
-  <div v-if="getFolders?.length || getFiles?.length" class="directory-grid flex gap-2 justify-center">
+  <div v-if="getFolders?.length || getFiles?.length" class="directory-grid flex gap-2 justify-center flex-wrap">
     <div
       v-for="(folder, index) in getFolders"
       :key="index"

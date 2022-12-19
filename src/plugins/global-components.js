@@ -20,7 +20,6 @@ Object.entries(globalComponentsPaths).forEach(([path, module]) => {
   .split('/')
   .pop()
   .replace(/\.vue$/, '')
-  console.log(componentName, module);
 
   app.component(componentName, module.default)
 })
