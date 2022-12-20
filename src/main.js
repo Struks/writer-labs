@@ -33,9 +33,9 @@ onAuthStateChanged(auth, (user) => {
         store.actions.fetchCurrentUser(user);
         // on init vue istance set currentFullPath from user uid
         store.state.currentFullPath = user.uid;
-        // if location pathname is login, signup or reset-password redirect to labaratory
+        // if location pathname is login, signup or reset-password redirect to library
         if (['/login', '/signup', '/reset-password'].includes(window.location.pathname)) {
-            router.push({ name: 'labaratory', params: { documents: 'files' } });
+            router.push({ name: 'library' });
         }
         // set userVerified to true if email is verified and false if not
         store.state.userVerified = user.emailVerified;

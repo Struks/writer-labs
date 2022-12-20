@@ -1,30 +1,72 @@
 /* show file buttons 'download' and 'delete' */
-@keyframes  move-download-button {
+@keyframes move-download-button {
   0% {
     transform: scale(.3);
     left: 1.25rem;
     top: 2.5rem;
   }
+
   100% {
     transform: scale(1);
     left: 0;
     top: 0;
   }
+}
+
+@keyframes move-delete-button {
   0% {
     transform: scale(.3);
-    left: 1.25rem;
+    left: -2.5rem;
     top: 2.5rem;
   }
-}
-@keyframes  move-delete-button {
-    0% {
-        transform: scale(.3);
-      left: -2.5rem;
-      top: 2.5rem;
-    }
-    100% {
-        transform: scale(1);
-      left: 0;
-      top: 0;
-    }
+
+  100% {
+    transform: scale(1);
+    left: 0;
+    top: 0;
   }
+}
+
+/* show file buttons 'download', 'delete' and 'read */
+
+@keyframes move-download-button-3icons {
+  0% {
+    transform: scale(.3);
+    left: 4rem;
+    top: 2.5rem;
+  }
+
+  100% {
+    transform: scale(1);
+    left: 0;
+    top: 0;
+  }
+}
+
+@keyframes move-delete-button-3icons {
+  0% {
+    transform: scale(.3);
+    left: 1.5rem;
+    top: 2.5rem;
+  }
+
+  100% {
+    transform: scale(1);
+    left: 0;
+    top: 0;
+  }
+}
+
+@keyframes move-read-button {
+  0% {
+    transform: scale(.3);
+    left: -1.5rem;
+    top: 2.5rem;
+  }
+
+  100% {
+    transform: scale(1);
+    left: 0;
+    top: 0;
+  }
+}

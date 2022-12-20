@@ -3,15 +3,16 @@ import store from '../store';
 
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
-import UserOwnLabaratory from "../views/UserOwnLabaratory.vue";
+import UserOwnLibrary from "../views/UserOwnLibrary.vue";
 import ResetPassword from "../views/ResetPassword.vue";
+import PdfReader from "../views/PdfReader.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "/labaratory/files",
+      redirect: "/library",
     },
     {
       path: "/login",
@@ -28,22 +29,25 @@ const router = createRouter({
       name: "reset-password",
       component: ResetPassword,
     },
-    // labaratory
+    // library
     {
-      path: "/labaratory",
-      redirect: "/labaratory/files",
+      path: "/library",
+      name: "library",
+      component: UserOwnLibrary,
     },
+    // pdf reader
     {
-      path: "/labaratory/:documents(.*)",
-      name: "labaratory",
-      component: UserOwnLabaratory,
+      path: "/pdf-reader/:pdf",
+      name: "pdf-reader",
+      component: PdfReader,
     },
+
   ],
 });
-// if user is logged in and try to access login or signup page redirect to labaratory
+// if user is logged in and try to access login or signup page redirect to library
 router.beforeEach((to, from, next) => {
   if (['login', 'signup', 'reset-password'].includes(to.name) && store.state.currentUser) {
-    next({ name: 'labaratory', params: { documents: 'files' } });
+    next({ name: 'library' });
   } else {
     next();
   }

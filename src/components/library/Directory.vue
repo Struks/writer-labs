@@ -1,8 +1,10 @@
 <script setup>
 import { onMounted, inject, computed, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import SvgIcon from "../SvgIcon.vue";
 
 const store = inject("store");
+const router = useRouter();
 
 // data
 const showButtons = ref(false);
@@ -15,6 +17,7 @@ onMounted(async () => {
 const getFolders = computed(() => store.state.folders);
 const getFiles = computed(() => store.state.files);
 const getSelectedFile = computed(() => store.state.selectedFile);
+const getPdfUrl = computed(() => store.state.pdfUrl);
 
 // Methods
 // call getStorage action from store
@@ -22,9 +25,9 @@ const getStorage = async (path) => {
   // set store currentFullPath to path
   store.state.currentFullPath = path + '/';
   // call api
-  store.state.labaratoryLoader = true;
+  store.state.libraryLoader = true;
   await store.actions.getStorage();
-  store.state.labaratoryLoader = false;
+  store.state.libraryLoader = false;
 };
 // edit file name by except extention
 const editFileName = (name) => {
@@ -69,6 +72,14 @@ const deleteFile = async (file) => {
   showButtons.value = false;
   store.state.selectedFile = null;
 };
+const readPdf = async file => {
+  // true in action means that acction get only url
+  await store.actions.downloadFile(file, true);
+  // remove extention from file name
+  const name = editFileName(file.name);
+  router.push({ name: 'pdf-reader', params: { pdf: name } });
+
+}
 </script>
 
 
@@ -100,7 +111,7 @@ const deleteFile = async (file) => {
       </div>
       <div
         v-if="showButtons && getSelectedFile.name === file.name"
-        class="absolute left-[-33%] top-[-37%]"
+        class="absolute top-[-37%] right-0"
       >
         <div class="relative flex justify-center gap-4">
           <svg-icon
@@ -110,8 +121,8 @@ const deleteFile = async (file) => {
             class="
               flex-auto
               bg-page
-              animate-[move-download-button_500ms_ease-in-out]
             "
+            :class="{'animate-[move-download-button-3icons_500ms_ease-in-out]': getFileType(file) === 'pdf', 'animate-[move-download-button_500ms_ease-in-out]': getFileType(file) !== 'pdf'}"
           />
           <svg-icon
             @click="deleteFile(file)"
@@ -120,7 +131,18 @@ const deleteFile = async (file) => {
             class="
               flex-auto
               bg-page
-              animate-[move-delete-button_500ms_ease-in-out]
+            "
+            :class="{'animate-[move-delete-button-3icons_500ms_ease-in-out]': getFileType(file) === 'pdf', 'animate-[move-delete-button_500ms_ease-in-out]': getFileType(file) !== 'pdf'}"
+          />
+          <svg-icon
+            v-if="getFileType(file) === 'pdf'"
+            @click="readPdf(file)"
+            name="read"
+            title="Read"
+            class="
+              flex-auto
+              bg-page
+              animate-[move-read-button_500ms_ease-in-out]
             "
           />
         </div>

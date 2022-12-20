@@ -12,13 +12,14 @@ const router = useRouter();
 const state = reactive({
     currentUser: null,
     bookPageLoader: false,
-    labaratoryLoader: false,
+    libraryLoader: false,
     userVerified: null,
     folders: [],
     files: [],
     selectedFile: null,
     currentFullPath: null,
     uploadProcess: null, // upload process in %
+    pdfUrl: null,
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -27,9 +28,6 @@ const mutations = {
     setBookPageLoader(payload) {
         state.bookPageLoader = payload;
     },
-    // setLabaratoryLoader(payload) {
-    //     state.labaratoryLoader = payload;
-    // },
     setUserVerified(payload) {
         state.userVerified = payload;
     },
@@ -48,6 +46,9 @@ const mutations = {
     setUploadProcess(payload) {
         state.uploadProcess = payload;
     },
+    setPdfUrl(payload) {
+        state.pdfUrl = payload;
+    }
 };
 
 const actions = {
@@ -97,20 +98,24 @@ const actions = {
             });
         });
     },
-    downloadFile: async (file) => {
+    downloadFile: async (file, onlyGetUrl = false) => {
         const storage = getStorage();
         await getDownloadURL(ref(storage, file.path)).then((url) => {
-            // This can be downloaded directly:
-            const xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            xhr.onload = (event) => {
-                const blob = xhr.response;
-            };
-            xhr.open('GET', url);
-            xhr.send();
-
-            // open url in new tab  
-            window.open(url, '_blank');
+            if(onlyGetUrl) {
+                mutations.setPdfUrl(url);
+            } else {
+                // This can be downloaded directly:
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = (event) => {
+                    const blob = xhr.response;
+                };
+                xhr.open('GET', url);
+                xhr.send();
+    
+                // open url in new tab  
+                window.open(url, '_blank');
+            }
 
         }).catch(error => {
             switch (error.code) {
@@ -171,7 +176,7 @@ const actions = {
         }).catch((error) => {
             toast.error(e.message);
         });
-        // state.labaratoryLoader = false;
+        // state.libraryLoader = false;
         // store folders and files in state
         mutations.setFolders(folders);
         mutations.setFiles(files);
@@ -183,7 +188,7 @@ const actions = {
         await signInWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
                 // navigate to user's library page 
-                router.push('/labaratory/files');
+                router.push('/library');
             })
             .catch((error) => {
                 switch (error.code) {

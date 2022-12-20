@@ -6,8 +6,8 @@ import { bookHelper } from '../helpers/bookHelper';
 // toasted
 import { useToast } from "vue-toastification";
 // components imports
-import VerifyAccountView from '../components/labaratory/VerifyAccountView.vue';
-import NotVerifyAccountView from '../components/labaratory/NotVerifyAccountView.vue';
+import VerifyAccountView from '../components/library/VerifyAccountView.vue';
+import NotVerifyAccountView from '../components/library/NotVerifyAccountView.vue';
 
 const toast = useToast();
 const router = useRouter();

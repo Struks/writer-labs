@@ -30,6 +30,7 @@ const bookHelper = {
             // after 1.5s, set page 6 display initial
             setTimeout(() => {
                 page6.style.display = 'initial';
+                page6.classList.add('pages-opened');
             }, 1000);
         }
     },

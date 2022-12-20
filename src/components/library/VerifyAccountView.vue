@@ -23,15 +23,15 @@ const uploadFileProcess = ref(false);
 
 // Mounted
 onMounted(() => {
-  // in case what is router params set filter to true and others to false
-  // const document = router.params.documents;
-  // set currentFullPath in store to user uid
-  store.state.currentFullPath = props.user.uid;
+  // set currentFullPath in store to user uid if it's not set
+  if(!getCurentFullPath) {
+    store.state.currentFullPath = props.user.uid;
+  }
 });
 
 // Computed
 const getCurentFullPath = computed(() => store.state.currentFullPath);
-const getLabaratoryLoader = computed(() => store.state.labaratoryLoader);
+const getLibraryLoader = computed(() => store.state.libraryLoader);
 
 // Watch
 watch(getCurentFullPath, (newVal, oldVal) => {
@@ -87,7 +87,7 @@ const setUploadFileProcess = () => {
     <UploadFileProcess v-if="uploadFileProcess" />
   </div>
   <div class="rotate-y writer-folders-files py-3">
-    <div v-if="getLabaratoryLoader">
+    <div v-if="getLibraryLoader">
         <content-loader class="rotate-y" viewBox="0 0 750 300">
             <rect x="0" y="0" rx="3" ry="3" width="120" height="120" />
             <rect x="150" y="0" rx="3" ry="3" width="120" height="120" />
@@ -102,7 +102,7 @@ const setUploadFileProcess = () => {
             <rect x="600" y="150" rx="3" ry="3" width="120" height="120" />
         </content-loader>
     </div>
-    <Directory v-if="!getLabaratoryLoader" />
+    <Directory v-if="!getLibraryLoader" />
   </div>
 </template>
 
