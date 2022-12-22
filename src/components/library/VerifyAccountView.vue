@@ -61,7 +61,7 @@ const setUploadFileProcess = () => {
       {{ user.userName }}'s library
     </h1>
     <div class="rotate-y breadcrumbs-div mt-6">
-      <Breadcrumbs :currentFullPath="getCurentFullPath" />
+      <breadcrumbs :currentFullPath="getCurentFullPath" />
     </div>
     <div class="rotate-y mt-5 mb-[2rem]">
       <ul class="flex list-none justify-evenly">
@@ -84,7 +84,7 @@ const setUploadFileProcess = () => {
       </ul>
     </div>
     <add-folder-process v-model="addFolderProcess" />
-    <UploadFileProcess v-if="uploadFileProcess" />
+    <upload-file-process v-if="uploadFileProcess" />
   </div>
   <div class="rotate-y writer-folders-files py-3">
     <div v-if="getLibraryLoader">
@@ -102,7 +102,7 @@ const setUploadFileProcess = () => {
             <rect x="600" y="150" rx="3" ry="3" width="120" height="120" />
         </content-loader>
     </div>
-    <Directory v-if="!getLibraryLoader" />
+    <directory v-if="!getLibraryLoader" />
   </div>
 </template>
 

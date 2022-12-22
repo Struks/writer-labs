@@ -29,6 +29,7 @@ const userVerified = computed(() => store.state.userVerified);
 const signOut = async () => {
     await store.actions.signOut();
     router.push({ name: 'login' });
+    store.actions.emptyState();
 }
 
 // Before Route Leave
@@ -48,7 +49,7 @@ onBeforeRouteLeave((to, from, next) => {
     <!-- if user account has not verified -->   
     <NotVerifyAccountView v-if="!userVerified" />
     
-    <div class="writer-footer">
+    <div v-if="currentUser" class="writer-footer">
         <div @click="signOut" class="rotate-y text-sm opacity-80 cursor-pointer max-w-max mr-auto hover:opacity-100 hover:font-bold">Sign Out --></div>
     </div>
 

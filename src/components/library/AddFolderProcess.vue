@@ -15,8 +15,7 @@ const addFolder = async () => {
   await store.actions.addFolder(folderName.value);
   // set addFolderProcess to false
   emit("update:modelValue", false);
-  // call getStorage action from store
-  await store.actions.getStorage();
+  folderName.value = '';
 };
 </script>
 

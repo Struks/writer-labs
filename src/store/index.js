@@ -61,6 +61,8 @@ const actions = {
             toast.success('Folder created successfully');
             // delete null file
             deleteObject(storageRef);
+            // update current path in store and access to new folder
+            mutations.setCurrentFullPath(`${state.currentFullPath}/${folderName}/`);
             actions.getStorage(`${state.currentFullPath}`);
         }).catch((error) => {
             toast.error(error.message);
@@ -284,6 +286,13 @@ const actions = {
 
         state.bookPageLoader = false;
     },
+
+    // empty state after user sign out
+    emptyState: async () => {
+        mutations.setFolders([]);
+        mutations.setFiles([]);
+        mutations.setcurrentUser(null);
+    }
 };
 
 export default {

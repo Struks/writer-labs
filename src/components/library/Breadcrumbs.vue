@@ -38,6 +38,21 @@ const navigateToFolder = async (path) => {
   await store.actions.getStorage();
   store.state.libraryLoader = false;
 };
+// change first breadcrumb to My Library
+const changeFirstBreadCrumb = (name) => {
+  const user = store.state.currentUser;
+  let result = name;
+  if (user) {
+    const userUid = user.uid;
+    const userName = user.userName;
+    console.log('name', name);
+    result = name.replace(userUid, userName);
+    console.log('result', result);
+  }
+
+  return result;
+};
+
 </script>
 
 <template>
@@ -48,7 +63,7 @@ const navigateToFolder = async (path) => {
       @click="navigateToFolder(breadcrumb.fullPath)"
       class="text-xs font-serif font-bold cursor-pointer hover:underline underline-offset-2"
     >
-      /{{ breadcrumb.name }}
+      /{{ changeFirstBreadCrumb(breadcrumb.name) }}
     </li>
   </ul>
 </template>
