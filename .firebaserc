@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "writer-labs"
-  }
+    "default": "writer-labs",
+    "production": "writer-labs"
+  },
+  "targets": {},
+  "etags": {},
+  "target": {}
 }
