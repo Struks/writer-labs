@@ -4,7 +4,10 @@ import { inject, computed } from 'vue'
 const store = inject('store')
 
 // Computed
-const getUploadProcess = computed(() => store.state.uploadProcess)
+const getUploadProcess = computed(() => {
+    // return uploadProcess with 2 decimal value
+    return Number(store.state.uploadProcess)?.toFixed(2);
+})
 
 // Methods
 const uploadFile = async (e) => {
@@ -23,7 +26,7 @@ const uploadFile = async (e) => {
             </div>
             <input @change="uploadFile" id="dropzone-file" type="file" class="hidden" />
         </label>
-        <div v-if="getUploadProcess" class="upload-process relative mt-4 border-2 border-spacing-4 w-full h-4 bg-page rounded-lg">
+        <div v-if="getUploadProcess > 0" class="upload-process relative mt-4 border-2 border-spacing-4 w-full h-4 bg-page rounded-lg">
             <div class="absolute top-0 left-0 h-full bg-[#7C0B13] rounded-lg" :style="{ width: `${getUploadProcess}%` }"></div>
             <div class="absolute -top-[5px] left-[47%] text text-[#fff] text-" >{{getUploadProcess}} %</div>
         </div>

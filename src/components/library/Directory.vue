@@ -80,6 +80,19 @@ const readPdf = async file => {
   router.push({ name: 'pdf-reader', params: { pdf: name } });
 
 }
+// create method to display file if his name isn't 'null'
+const displayFile = (files) => {
+  // filter array of files and return only files with name !== 'null'
+  return files.filter((file) => file.name !== "null");
+};
+// create method to cut text if it's too long
+const cutText = (text) => {
+  if (text.length > 25) {
+    return text.slice(0, 25) + "...";
+  } else {
+    return text;
+  }
+};
 </script>
 
 
@@ -89,25 +102,26 @@ const readPdf = async file => {
       v-for="(folder, index) in getFolders"
       :key="index"
       @click="getStorage(folder.path)"
+      :title="folder.name"
       class="folder cursor-pointer basis-1/5 hover:underline underline-offset-2"
     >
       <svg-icon name="folder" />
       <div class="folder-name font-mono font-semibold leading-5">
-        {{ folder.name }}
+        {{ cutText(folder.name) }}
       </div>
     </div>
     <div
-      v-for="(file, index) in getFiles"
+      v-for="(file, index) in displayFile(getFiles)"
       :key="index"
       @click="setButtons(file)"
       class="folder cursor-pointer basis-1/5 relative hover:underline underline-offset-2"
     >
       <svg-icon :name="getFileType(file)" title="Click me" />
       <div
-        title="Click me"
+        :title="editFileName(file.name)"
         class="file-name font-mono font-semibold leading-5 pt-1"
       >
-        {{ editFileName(file.name) }}
+        {{ cutText(editFileName(file.name)) }}
       </div>
       <div
         v-if="showButtons && getSelectedFile.name === file.name"

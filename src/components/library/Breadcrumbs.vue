@@ -14,7 +14,12 @@ const props = defineProps({
 // create breadcrumbs from currentFullPath
 const breadcrumbs = computed(() => {
   const path = props.currentFullPath.split("/");
+  // if any element is empty remove it
+  removeEmptyElements(path);
+  // create breadcrumbs array
   const breadcrumbs = [];
+  // Create fullPath variable to store full path of each breadcrumb element 
+  // and push it to breadcrumbs array as object with name and fullPath properties
   let fullPath = "";
   for (let i = 0; i < path.length; i++) {
     fullPath += path[i] + "/";
@@ -28,29 +33,37 @@ const breadcrumbs = computed(() => {
 
 // Methods
 // call getStorage action from store
-const navigateToFolder = async (path) => {
+const navigateToFolder = async (fullPath) => {
   // only call api if path is not the same as currentFullPath
-  if(path === store.state.currentFullPath) return;
+  if(fullPath === store.state.currentFullPath) return;
   // set store currentFullPath to path
-  store.state.currentFullPath = path;
+  store.state.currentFullPath = fullPath;
   // call api
   store.state.libraryLoader = true;
   await store.actions.getStorage();
   store.state.libraryLoader = false;
 };
-// change first breadcrumb to My Library
+// change first breadcrumb to user name
 const changeFirstBreadCrumb = (name) => {
+  // if name is not user uid return name
   const user = store.state.currentUser;
   let result = name;
+  // if name is user uid return user name
   if (user) {
     const userUid = user.uid;
     const userName = user.userName;
-    console.log('name', name);
     result = name.replace(userUid, userName);
-    console.log('result', result);
   }
 
   return result;
+};
+// remove empty elements from array
+const removeEmptyElements = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === "") {
+      array.splice(i, 1);
+    }
+  }
 };
 
 </script>
