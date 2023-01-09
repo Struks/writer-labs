@@ -26,4 +26,5 @@ h1, h2, h3, h4, h5, p, a, li, span, label, button {
 
 .Vue-Toastification__toast--default.my-custom-toast-class {
   background-color: #E3D1BF;
+  color: #2D2D2D;
 }

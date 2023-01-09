@@ -56,7 +56,7 @@ const setUploadFileProcess = () => {
   <div>
     <h1
       v-if="user && user.userName"
-      class="rotate-y text-4xl uppercase font-bold text-center"
+      class="rotate-y text-4xl uppercase font-bold text-center text-default"
     >
       {{ user.userName }}'s library
     </h1>
@@ -68,7 +68,7 @@ const setUploadFileProcess = () => {
         <li
           @click="setAddFolderProcess"
           title="Click me"
-          class="text-lg cursor-pointer hover:underline underline-offset-2"
+          class="text-lg cursor-pointer hover:underline underline-offset-2 text-default"
           :class="{ underline: addFolderProcess }"
         >
           Add folder
@@ -76,7 +76,7 @@ const setUploadFileProcess = () => {
         <li
           @click="setUploadFileProcess"
           title="Click me"
-          class="text-lg cursor-pointer hover:underline underline-offset-2"
+          class="text-lg cursor-pointer hover:underline underline-offset-2 text-default"
           :class="{ underline: uploadFileProcess }"
         >
           Upload file

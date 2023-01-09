@@ -52,13 +52,13 @@ onBeforeRouteLeave((to, from, next) => {
 </script>
 
 <template>
-  <h1 class="rotate-y text-4xl uppercase font-bold text-center">
+  <h1 class="rotate-y text-4xl uppercase font-bold text-center text-default">
     Forgotten password
   </h1>
   <form @submit.prevent="resetPassword" class="rotate-y">
     <label
       for="email"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-default"
       >Email address</label
     >
     <input
@@ -74,6 +74,7 @@ onBeforeRouteLeave((to, from, next) => {
         block
         w-full
         p-2.5
+        text-default
       "
       placeholder="john.doe@company.com"
       :class="{ 'border-2 border-[#ff0000]': vv.email.$error }"
@@ -109,9 +110,9 @@ onBeforeRouteLeave((to, from, next) => {
       Reset password
     </button>
   </form>
-  <div class="rotate-y text-sm opacity-80 text-center">
+  <div class="rotate-y text-sm text-center text-default">
     Back to the
-    <router-link to="/login" class="text-sm opacity-80 underline"
+    <router-link to="/login" class="text-sm underline text-default font-bold"
       > Login page</router-link
     >
   </div>

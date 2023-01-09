@@ -29,12 +29,12 @@ const addFolder = async () => {
   <!-- and then call getStorage method from store -->
   <!-- and pass to it the currentFullPath from store -->
   <form v-if="props.modelValue"  class="rotate-y w-10/12 m-auto">
-    <div class="flex items-center border-b border-teal-500 py-2">
+    <div class="flex items-center border-b border-default border-teal-500 py-2">
       <input
-      v-model="folderName"
+        v-model="folderName"
         class="
           appearance-none
-            bg-page-special
+          bg-page-special
           border-none
           w-full
           text-[#2c3e50]

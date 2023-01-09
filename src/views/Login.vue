@@ -58,12 +58,12 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
   <!-- login form -->
-  <h1 class="rotate-y text-4xl uppercase font-bold text-center">Sign In</h1>
+  <h1 class="rotate-y text-4xl uppercase font-bold text-center text-default">Sign In</h1>
   <form @submit.prevent="login" class="rotate-y">
     <div class="mb-6">
       <label
         for="email"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-default"
         >Email address</label
       >
       <input
@@ -79,6 +79,7 @@ onBeforeRouteLeave((to, from, next) => {
           block
           w-full
           p-2.5
+          text-default
         "
         placeholder="john.doe@company.com"
         :class="{ 'border-2 border-[#ff0000]': vv.email.$error }"
@@ -94,7 +95,7 @@ onBeforeRouteLeave((to, from, next) => {
     <div class="mb-6">
       <label
         for="password"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-default"
         >Password</label
       >
       <input
@@ -110,6 +111,7 @@ onBeforeRouteLeave((to, from, next) => {
           block
           w-full
           p-2.5
+          text-default
         "
         placeholder="•••••••••"
         :class="{ 'border-2 border-[#ff0000]': vv.password.$error }"
@@ -132,7 +134,7 @@ onBeforeRouteLeave((to, from, next) => {
             ml-auto
           "
         >
-        <router-link class="text-sm text-gray-300 opacity-80 hover:underline hover:opacity-100" to="/reset-password">Forgot?</router-link>
+        <router-link class="text-sm text-gray-300 opacity-80 hover:underline hover:opacity-100 text-default" to="/reset-password">Forgot?</router-link>
         </div>
       </div>
     </div>
@@ -159,9 +161,9 @@ onBeforeRouteLeave((to, from, next) => {
       Submit
     </button>
   </form>
-  <div class="rotate-y text-sm opacity-80 text-center">
+  <div class="rotate-y text-sm opacity-100 text-center text-default">
     Not yet have own laboratory?
-    <router-link to="/signup" class="text-sm opacity-80 underline"
+    <router-link to="/signup" class="text-sm opacity-100 underline font-bold"
       >Create one now!</router-link
     >
   </div>

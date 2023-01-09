@@ -36,7 +36,7 @@ const callToasted = (() => {
 </script>
 
 <template>
-    <h1 class="rotate-y text-2xl uppercase font-bold text-center">Your account has not been verified. Please do it.</h1>
+    <h1 class="rotate-y text-2xl uppercase font-bold text-center text-default">Your account has not been verified. Please do it.</h1>
     <div class="must-verify-icon block w-[200px] h-[163px] m-auto rotate-y">
         <img class="w-full h-full" :src="verification" alt="verification-account">
         <div @click="callToasted" class="max-w-full m-auto text-lg text-[#7A0B13] cursor-pointer pt-2 text-center hover:underline">How to verify account?</div>

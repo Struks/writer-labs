@@ -74,7 +74,7 @@ const removeEmptyElements = (array) => {
       v-for="breadcrumb in breadcrumbs"
       :key="breadcrumb.fullPath"
       @click="navigateToFolder(breadcrumb.fullPath)"
-      class="text-xs font-serif font-bold cursor-pointer hover:underline underline-offset-2"
+      class="text-xs font-serif font-bold cursor-pointer hover:underline underline-offset-2 text-default"
     >
       /{{ changeFirstBreadCrumb(breadcrumb.name) }}
     </li>

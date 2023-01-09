@@ -10,6 +10,7 @@ module.exports = {
       'cover': '#51463C',
       'page': '#E3D1BF',
       'page-special': '#D7C6B5',
+      'default': '#2D2D2D',
     },
     extend: {
       transformOrigin: {

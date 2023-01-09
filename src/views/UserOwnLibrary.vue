@@ -50,7 +50,7 @@ onBeforeRouteLeave((to, from, next) => {
     <NotVerifyAccountView v-if="!userVerified" />
     
     <div v-if="currentUser" class="writer-footer">
-        <div @click="signOut" class="rotate-y text-sm opacity-80 cursor-pointer max-w-max mr-auto hover:opacity-100 hover:font-bold">Sign Out --></div>
+        <div @click="signOut" class="rotate-y text-sm cursor-pointer max-w-max mr-auto opacity-100 font-bold text-default">Sign Out --></div>
     </div>
 
 </template>

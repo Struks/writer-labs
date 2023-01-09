@@ -82,7 +82,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
   <!-- Register form -->
-  <h1 class="rotate-y text-4xl uppercase font-bold text-center">Sign Up</h1>
+  <h1 class="rotate-y text-4xl uppercase font-bold text-center text-default">Sign Up</h1>
   <form @submit.prevent="signup" class="rotate-y">
     <div class="flex mb-6 -mx-1">
       <div class="w-1/2 mx-1">
@@ -94,7 +94,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >First name</label
         >
@@ -111,12 +111,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="John"
           :class="{ 'border-2 border-[#ff0000]': vv.firstName.$error }"
@@ -140,7 +135,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >Last name</label
         >
@@ -157,12 +152,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="Nilson"
           :class="{ 'border-2 border-[#ff0000]': vv.lastName.$error }"
@@ -188,7 +178,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >User name</label
         >
@@ -205,12 +195,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="Johny"
           :class="{ 'border-2 border-[#ff0000]': vv.userName.$error }"
@@ -234,7 +219,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >Email address</label
         >
@@ -251,12 +236,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="john.doe@gmail.com"
           :class="{ 'border-2 border-[#ff0000]': vv.email.$error }"
@@ -280,7 +260,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >Password</label
         >
@@ -297,12 +277,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="•••••••••"
           :class="{ 'border-2 border-[#ff0000]': vv.password.$error }"
@@ -326,7 +301,7 @@ onBeforeRouteLeave((to, from, next) => {
             text-sm
             font-medium
             text-gray-900
-            dark:text-gray-300
+            text-default
           "
           >Confirm password</label
         >
@@ -343,12 +318,7 @@ onBeforeRouteLeave((to, from, next) => {
             block
             w-full
             p-2.5
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
+            text-default
           "
           placeholder="•••••••••"
           :class="{ 'border-2 border-[#ff0000]': vv.confirmPassword.$error }"
@@ -393,9 +363,9 @@ onBeforeRouteLeave((to, from, next) => {
       Submit
     </button>
   </form>
-  <div class="rotate-y text-sm opacity-80 text-center">
+  <div class="rotate-y text-sm text-center text-default">
     Already have own laboratory?
-    <router-link to="/login" class="text-sm opacity-80 underline"
+    <router-link to="/login" class="text-sm underline text-default font-bold"
       >Login now!</router-link
     >
   </div>

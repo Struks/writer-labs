@@ -8,9 +8,11 @@ const router = useRouter();
 
 // data
 const showButtons = ref(false);
+const storageIndicator = ref(false);
 // mounted
 onMounted(async () => {
   await store.actions.getStorage();
+  storageIndicator.value = true;
 });
 
 // Computed
@@ -106,7 +108,7 @@ const cutText = (text) => {
       class="folder cursor-pointer basis-1/5 hover:underline underline-offset-2"
     >
       <svg-icon name="folder" />
-      <div class="folder-name font-mono font-semibold leading-5">
+      <div class="folder-name font-mono font-semibold leading-5 text-default">
         {{ cutText(folder.name) }}
       </div>
     </div>
@@ -119,7 +121,7 @@ const cutText = (text) => {
       <svg-icon :name="getFileType(file)" title="Click me" />
       <div
         :title="editFileName(file.name)"
-        class="file-name font-mono font-semibold leading-5 pt-1"
+        class="file-name font-mono font-semibold leading-5 text-default pt-1"
       >
         {{ cutText(editFileName(file.name)) }}
       </div>
@@ -164,14 +166,14 @@ const cutText = (text) => {
     </div>
   </div>
   <!-- no files or folder -->
-  <div v-if="!getFolders?.length && !getFiles?.length">
+  <div v-if="!getFolders?.length && !getFiles?.length && storageIndicator">
     <div class="flex justify-center">
       <svg-icon name="empty" />
     </div>
     <div class="flex justify-center">
       <div class="text-center">
-        <div class="font-semibold text-2xl pb-1">Empty</div>
-        <div class="text-gray-500">There is no file or folder</div>
+        <div class="font-semibold text-2xl pb-1 text-default">Empty</div>
+        <div class="text-gray-500 text-default">There is no file or folder</div>
       </div>
     </div>
   </div>
