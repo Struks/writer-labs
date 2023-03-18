@@ -19,7 +19,12 @@ const state = reactive({
     selectedFile: null,
     currentFullPath: null,
     uploadProcess: null, // upload process in %
+    // PDF reader
     pdfUrl: null,
+    viewport: {
+        width: 500, // initial state
+        height: 600, // initial state
+    },
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -48,6 +53,9 @@ const mutations = {
     },
     setPdfUrl(payload) {
         state.pdfUrl = payload;
+    },
+    setViewport(payload) {
+        state.viewport = payload;
     }
 };
 
@@ -176,7 +184,7 @@ const actions = {
                 });
             });
         }).catch((error) => {
-            toast.error(e.message);
+            toast.error(error.message);
         });
         // state.libraryLoader = false;
         // store folders and files in state

@@ -3,6 +3,11 @@ import { RouterView, useRoute } from "vue-router";
 import BookTitle from "./components/BookTitle.vue";
 import { ref, provide, computed, watch } from "vue";
 import { ContentLoader } from "vue-content-loader";
+// page components
+import Page5 from "./views/pages/Page5.vue";
+import Page6 from "./views/pages/Page6.vue";
+
+
 // store
 import store from "@/store";
 // route
@@ -18,17 +23,29 @@ const pdfReaderActive = ref(false);
 const page6View = ref(false);
 
 // Computed
-const loader = computed(() => store.state.bookPageLoader);
+const loader = computed(() => store.state.bookPageLoader); //!
+const getViewport = computed(() => store.state.viewport);
 
 // Watch
 // watch route.name to set pdfReaderActive to true if router.name is pdf-reader
 watch(
   () => route.name,
   (val) => {
+    //! This indicator is not working in future
+    // todo: router will not work here because we'll not use router for pdf-reader
+    // todo: 'pdfReaderActive' prefer to set in store and use it in other components
+    // todo: 'pdfReaderActive' will be set to true when user click on pdf-reader button
+    // todo: 'pdfReaderActive' will be set to false when user click on back button
+    // * Why we need this? 
+    // * Because we need to have diference book for pdf-reader
+    // * Because we need animation for pdf-reader. What animation?S
+    // ? pdfReaderActive == true ? library book closed : pdf-reader book opened
     if (val === "pdf-reader") {
       pdfReaderActive.value = true;
     } else {
       pdfReaderActive.value = false;
+      // set viewport to default
+      store.state.viewport = { width: 500, height: 600 };
     }
   }
 );
@@ -55,82 +72,36 @@ const openBook = () => {
     @click="openBook"
     ref="book"
     :title="!bookIsOpen ? 'Open Writer Labs' : ''"
-    class="
-      book
-      closed-book
-      relative
-      cursor-pointer
-      h-[600px]
-      w-[500px]
-      transition
-      duration-500
-      ease-in-out
-    "
+    class='book closed-book relative cursor-pointer h-[700px] w-[600px] transition duration-500 ease-in-out'
+    :style="{
+      width: getViewport.width + 'px',
+      height: getViewport.height + 'px',
+    }"
   >
     <div
-      class="
-        back
-        book-page
-        bg-gradient-to-r
-        from-[#d2383b]
-        to-[#850C14]
-        via-[#850C14]
-      "
+      class="back book-page bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14]"
     ></div>
     <div
       class="page6 book-page bg-page"
       :class="{ '!flex items-center justify-center': pdfReaderActive }"
     >
-      <div
+      <Page6 :pdfReaderActive="pdfReaderActive" />
+      <!-- <div
         v-if="pdfReaderActive"
-        class="
-          text-md text-center
-          cursor-pointer
-          hover:opacity-100 hover:font-bold underline underline-offset-2
-  
-        "
+        class="text-md text-center cursor-pointer hover:opacity-100 hover:font-bold underline underline-offset-2"
       >
         <router-link to="/library">Back to Library</router-link>
-      </div>
+      </div> -->
     </div>
     <div class="page5 book-page bg-page-special p-0">
-      <div
-        class="flex flex-col h-full"
-        :class="{
-          'justify-center items-center': loader,
-          'justify-between': !loader,
-          'p-[2rem]': !pdfReaderActive,
-        }"
-      >
-        <content-loader v-if="loader" class="rotate-y" viewBox="0 0 250 310">
-          <rect x="0" y="0" rx="3" ry="3" width="250" height="20" />
-          <rect x="20" y="100" rx="3" ry="3" width="220" height="10" />
-          <rect x="20" y="120" rx="3" ry="3" width="220" height="10" />
-          <rect x="20" y="140" rx="3" ry="3" width="220" height="10" />
-          <rect x="20" y="160" rx="3" ry="3" width="220" height="10" />
-          <rect x="20" y="180" rx="3" ry="3" width="220" height="10" />
-          <rect x="70" y="300" rx="3" ry="3" width="100" height="10" />
-        </content-loader>
-        <RouterView v-if="!loader" />
-      </div>
+      <Page5 :pdfReaderActive="pdfReaderActive" />
     </div>
     <div class="page4 book-page bg-page"></div>
     <div class="page3 book-page bg-page-special"></div>
     <div class="page2 book-page bg-page"></div>
     <div class="page1 book-page bg-page-special"></div>
     <div
-      class="
-        front
-        book-page
-        bg-gradient-to-r
-        from-[#d2383b]
-        to-[#850C14]
-        via-[#850C14]
-        flex flex-col
-        justify-center
-        hover:shadow-2xl
-        shadow-blue-900
-      "
+      class="front book-page bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14] flex flex-col justify-center hover:shadow-2xl shadow-blue-900"
     >
       <BookTitle title="Writer Labs" author="Edvin Strujic" />
     </div>

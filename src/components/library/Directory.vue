@@ -75,7 +75,7 @@ const deleteFile = async (file) => {
   store.state.selectedFile = null;
 };
 const readPdf = async file => {
-  // true in action means that acction get only url
+  // true in action means that action get only url
   await store.actions.downloadFile(file, true);
   // remove extention from file name
   const name = editFileName(file.name);
