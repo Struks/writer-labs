@@ -1,7 +1,7 @@
 
 
 <script setup>
-import { ref, computed, inject, onMounted, watch } from "vue";
+import { ref, inject } from "vue";
 import SvgIcon from "../SvgIcon.vue";
 
 // store
@@ -23,8 +23,8 @@ const backToLibraryToasted = ref(false);
         />
         <!-- <div class="drop-down-icon">
         </div> -->
-        <div class="back-to-library-toasted px-3 py-2 rounded-md bg-[#638ce6d5] mt-1 cursor-pointer " v-if="backToLibraryToasted">
-            <div @click="store.state.pdfReaderActive = false" class="back-to-library-toasted-text text-[#fff]">
+        <div class="back-to-library-toasted px-3 py-2 rounded-md bg-[#638ce6d5] mt-1 cursor-pointer text-[#fff] hover:shadow-xl hover:transition hover:duration-900 hover:shadow-page hover:text-page" v-if="backToLibraryToasted">
+            <div @click="store.state.pdfReaderActive = false" class="back-to-library-toasted-text">
                 Back to Library
             </div>
         </div>

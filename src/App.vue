@@ -1,18 +1,16 @@
 <script setup>
-import { RouterView, useRoute } from "vue-router";
 import BookTitle from "./components/BookTitle.vue";
 import { ref, provide, computed, watch } from "vue";
-import { ContentLoader } from "vue-content-loader";
 // page components
 import Page5 from "./views/pages/Page5.vue";
 import Page6 from "./views/pages/Page6.vue";
 // back to library component
 import BackToLibrary from "./components/pdf-reader/BackToLibrary.vue";
+// next-prev page button component
+import NextPreviewPageButton from "./components/pdf-reader/NextPreviewPageButton.vue";
 
 // store
 import store from "@/store";
-// route
-const route = useRoute();
 
 // provide
 provide("store", store);
@@ -137,7 +135,10 @@ const prepareBookForLabrary = () => {
   </div>
 
   <!-- back to library button -->
-  <BackToLibrary v-if="pdfReaderActive" />
+  <BackToLibrary v-if="pdfReaderActive && bookIsOpen" />
+  <!-- next page button -->
+  <NextPreviewPageButton v-if="pdfReaderActive && bookIsOpen" prev />
+  <NextPreviewPageButton v-if="pdfReaderActive && bookIsOpen" next />
 </template>
 
 <style>
@@ -148,7 +149,7 @@ const prepareBookForLabrary = () => {
 }
 
 .remove-book-from-desk {
-  animation: remove-book-from-desk 800ms ease-in-out forwards;
+  animation: remove-book-from-desk 700ms ease-in-out forwards;
 }
 .set-book-on-desk {
   animation: get-book-to-desk 800ms ease-in-out forwards;
