@@ -4,15 +4,9 @@ import PdfReader from "../PdfReader.vue";
 
 // store
 const store = inject("store");
-// props
-const props = defineProps({
-    pdfReaderActive: {
-    type: Boolean,
-    default: false,
-  },
-});
 // computed
 const loader = computed(() => store.state.bookPageLoader);
+const pdfReaderActive = computed(() => store.state.pdfReaderActive);
 
 </script>
 

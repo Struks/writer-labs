@@ -25,6 +25,8 @@ const state = reactive({
         width: 500, // initial state
         height: 600, // initial state
     },
+    pdfReaderActive: false,
+    pdfReaderName: null,
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -56,7 +58,13 @@ const mutations = {
     },
     setViewport(payload) {
         state.viewport = payload;
-    }
+    },
+    setPdfReaderActive(payload) {
+        state.pdfReaderActive = payload;
+    },
+    setPdfReaderName(payload) {
+        state.pdfReaderName = payload;
+    },
 };
 
 const actions = {

@@ -11,6 +11,7 @@ module.exports = {
       'page': '#E3D1BF',
       'page-special': '#D7C6B5',
       'page-reader': '#FFF',
+      'page-reader-special': '#F3F3F3',
       'default': '#2D2D2D',
     },
     extend: {

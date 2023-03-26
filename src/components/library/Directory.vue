@@ -19,7 +19,6 @@ onMounted(async () => {
 const getFolders = computed(() => store.state.folders);
 const getFiles = computed(() => store.state.files);
 const getSelectedFile = computed(() => store.state.selectedFile);
-const getPdfUrl = computed(() => store.state.pdfUrl);
 
 // Methods
 // call getStorage action from store
@@ -78,8 +77,13 @@ const readPdf = async file => {
   // true in action means that action get only url
   await store.actions.downloadFile(file, true);
   // remove extention from file name
+  console.log('before editFileName: ', file.name);
   const name = editFileName(file.name);
-  router.push({ name: 'pdf-reader', params: { pdf: name } });
+  console.log('after editFileName: ', name);
+  // set pdf-reading mode
+  store.state.pdfReaderActive = true;
+  // set pdf name
+  store.state.pdfReaderName = name;
 
 }
 // create method to display file if his name isn't 'null'

@@ -70,3 +70,30 @@
     top: 0;
   }
 }
+
+/* remove book from desk */
+@keyframes remove-book-from-desk {
+  0% {
+    bottom: 0;
+    opacity: 1;
+  }
+
+  100% {
+    bottom: 200px;
+    opacity: 0;
+  }
+  
+}
+/* get book to desk */
+@keyframes get-book-to-desk {
+  0% {
+    bottom: 200px;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 0;
+    opacity: 1;
+  }
+  
+}
