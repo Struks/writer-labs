@@ -5,7 +5,7 @@ import PdfReader from "../PdfReader.vue";
 // store
 const store = inject("store");
 // computed
-const loader = computed(() => store.state.bookPageLoader);
+const pdfReaderPage6 = computed(() => store.state.pdfReaderPage6);
 const pdfReaderActive = computed(() => store.state.pdfReaderActive);
 
 </script>
@@ -15,7 +15,7 @@ const pdfReaderActive = computed(() => store.state.pdfReaderActive);
     v-if="pdfReaderActive"
     class="pdf-reader-page6"
   >
-    <PdfReader :pageNumber=2 />
+    <PdfReader :pageNumber=pdfReaderPage6 />
   </div>
 </template>
 

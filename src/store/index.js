@@ -27,6 +27,8 @@ const state = reactive({
     },
     pdfReaderActive: false,
     pdfReaderName: null,
+    pdfReaderPage5: 1,
+    pdfReaderPage6: 2,
 });
 const mutations = {
     setcurrentUser(payload) {
@@ -308,6 +310,15 @@ const actions = {
         mutations.setFolders([]);
         mutations.setFiles([]);
         mutations.setcurrentUser(null);
+    },
+
+    nextPage: () => {
+        state.pdfReaderPage5 += 2;
+        state.pdfReaderPage6 += 2;
+    },
+    prevPage : () => {
+        state.pdfReaderPage5 -= 2;
+        state.pdfReaderPage6 -= 2;
     }
 };
 

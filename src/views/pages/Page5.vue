@@ -8,6 +8,7 @@ const store = inject("store");
 // computed
 const loader = computed(() => store.state.bookPageLoader);
 const pdfReaderActive = computed(() => store.state.pdfReaderActive);
+const pdfReaderPage5 = computed(() => store.state.pdfReaderPage5);
 </script>
 
 <template>
@@ -35,7 +36,7 @@ const pdfReaderActive = computed(() => store.state.pdfReaderActive);
   v-if="pdfReaderActive"
     class="pdf-reader-page5 rotate-y"
   >
-    <PdfReader :pageNumber=1 />
+    <PdfReader :pageNumber=pdfReaderPage5 />
   </div>
 </template>
 

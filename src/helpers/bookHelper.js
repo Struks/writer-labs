@@ -34,6 +34,66 @@ const bookHelper = {
             }, 1000);
         }
     },
+    pdfNextPrevPageAnimation: (action) => {
+        // get element to animate page5 and page6
+        const book = document.querySelector('.book');
+        const page5 = document.querySelector('.page5');
+        const page6 = document.querySelector('.page6');
+
+        if(action === 'next') {
+            if(book.classList.contains('opened-book')) {
+                // set page5 diaply none
+                page5.style.display = 'none';
+                // page5.style.transition = 'display 0.5s ease-in-out';
+                // set page6 transform: rotateY(-145deg) and bg color #D7C6B5
+                page6.style.transform = 'rotateY(-145deg)';
+                page6.style.backgroundColor = '#FFF';
+                // Back page 6 to right position and show again page 5
+    
+    
+                setTimeout(() => {
+                    // show page 5 again
+                    page5.style.display = 'initial';
+                    // set page 6 transform: rotateY(-35deg), bg color #E3D1BF and display none
+                    page6.style.visibility = 'hidden';
+                    page6.style.transform = 'rotateY(-35deg)';
+                    page6.style.backgroundColor = '#FFF';
+                }, 700);
+    
+                // after 1.5s, set page 6 display initial
+                setTimeout(() => {
+                    page6.style.visibility = 'visible';
+                    page6.classList.add('pages-opened');
+                }, 1500);
+            }
+        } else if(action === 'prev') {
+            if(book.classList.contains('opened-book')) {
+                // set page6 diaply none
+                page6.style.display = 'none';
+                // page5.style.transition = 'display 0.5s ease-in-out';
+                // set page6 transform: rotateY(-35deg) and bg color #D7C6B5
+                page5.style.transform = 'rotateY(-35deg)';
+                // page5.style.transform = 'rotateY(-145deg)';
+                page5.style.backgroundColor = '#FFF';
+                // Back page 6 to right position and show again page 5
+                
+                setTimeout(() => {
+                    // show page 5 again
+                    page6.style.display = 'initial';
+                    page5.style.visibility = 'hidden';
+                    // set page 6 transform: rotateY(-35deg), bg color #E3D1BF and display none
+                    page5.style.transform = 'rotateY(-145deg)';
+                    page5.style.backgroundColor = '#FFF';
+                }, 700); // after 1.5s, set page 6 display initial
+                setTimeout(() => {
+                    page5.style.visibility = 'visible';
+                    page5.classList.add('pages-opened');
+                }, 1500);
+            }
+        }
+
+
+    },
 };
 
 export { bookHelper }

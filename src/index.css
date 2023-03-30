@@ -19,5 +19,5 @@
     @apply ml-auto scale-75 hover:shadow-[-1px_-1px_33px_5px_rgba(0,0,0,0.75)];
 }
 .opened-book {
-    @apply ml-[30%] scale-100 cursor-auto;
+    @apply  scale-100 cursor-auto;
 }

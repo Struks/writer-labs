@@ -108,6 +108,7 @@ const prepareBookForLabrary = () => {
     :style="{
       width: getViewport.width + 'px',
       height: getViewport.height + 'px',
+      marginLeft: bookIsOpen ? getViewport.width + 'px' : auto,
     }"
   >
     <div
@@ -163,7 +164,7 @@ const prepareBookForLabrary = () => {
 .pdf-reader-mode .page1,
 .pdf-reader-mode .page3,
 .pdf-reader-mode .page5 {
-  @apply bg-page-reader-special;
+  @apply bg-page-reader;
 }
 
 /* Pages transform */
