@@ -11,6 +11,7 @@ const props = defineProps({
 });
 
 // state
+const pdfBlob  = ref(null); // blob of the pdf file
 const hiddenText = ref(false);
 // Retrieving the context of the canvas element
 const canvas = document.createElement("canvas");
@@ -21,29 +22,44 @@ const pdfUrl = computed(() => store.state.pdfUrl);
 
 // mounted
 onMounted(() => {
-  loadPDF();
+  getPdfPage();
 });
 
-// // updated
-// onUpdated(() => {
-//   loadPDF();
-// });
+
 watch(
   () => props.pageNumber,
   async (newVal, oldVal) => {
     if (newVal !== oldVal) {
       hiddenText.value = true;
-      await loadPDF();
-      hiddenText.value = false;
+      await getPdfPage();
+      setTimeout(() => {
+        hiddenText.value = false;
+      }, 700);
     }
   }
 );
 
 //* Methods
+// save pdf in memory and return it
+const loadPdf = async () => {
+  if (pdfBlob.value) {
+    // If the PDF file is already loaded, return it from memory
+    return Promise.resolve(pdfBlob.value);
+  }
+
+  // If the PDF file is not loaded, fetch it from the server
+  const response = await fetch(pdfUrl.value);
+  pdfBlob.value = await response.blob();
+
+  return Promise.resolve(pdfBlob.value);
+}
 // Displaying PDF file on canvas element
-const loadPDF = async () => {
+const getPdfPage = async () => {
+  const pdf = await loadPdf();
+  const pdfData = new Uint8Array(await pdf.arrayBuffer());
+
   // Load the PDF document
-  const pdfDoc = await pdfjsLib.getDocument(pdfUrl.value).promise;
+  const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
   // Get the prop page of the PDF document
   const pageNumber = props.pageNumber;
   const pdfPage = await pdfDoc.getPage(pageNumber);
@@ -93,7 +109,7 @@ const loadPDF = async () => {
     :id="'pdf-container' + pageNumber"
     class="w-full h-full"
     :class="{ hidden: hiddenText }"
-  ></div>
+    ></div>
 </template>
 
 <style lang="scss" scoped>
