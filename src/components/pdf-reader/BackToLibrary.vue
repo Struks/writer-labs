@@ -14,8 +14,8 @@ const backToLibraryToasted = ref(false);
 const backToLibrary = () => {
     // remove style for page 5 and page 6 
     removeStyle();
-    // remove pdf reader mode
-    store.state.pdfReaderActive = false;
+    // reset state of pdf reader mode and page number
+    resetState();
 };
 // remove style for page 5 and page 6
 const removeStyle = () => {
@@ -26,6 +26,13 @@ const removeStyle = () => {
     // page 6
     page6.removeAttribute('style');
 };
+const resetState = () => {
+    // remove pdf reader mode
+    store.state.pdfReaderActive = false;
+    // reset page number on default (1 and 2)
+    store.state.pdfReaderPage5 = 1;
+    store.state.pdfReaderPage6 = 2;
+}
 
 </script>
 

@@ -18,10 +18,16 @@ provide("store", store);
 // Variables
 const bookIsOpen = ref(false);
 const book = ref(null);
+// variable for viewport of book. 500x600 is default viewport for library page
+let bookActiveViewport = ref({
+  width: 500,
+  height: 600,
+})
 const bookTitle = ref("Writer Labs");
 const bookAuthor = ref("Evan You");
 
 // Computed
+// get viewport from store
 const getViewport = computed(() => store.state.viewport);
 const pdfReaderActive = computed(() => store.state.pdfReaderActive);
 const pdfReaderName = computed(() => store.state.pdfReaderName);
@@ -67,6 +73,9 @@ const prepareBookForPdfReader = () => {
   }, 500);
   // change book design for pdf-reader
   setTimeout(() => {
+    // set new book width and height from state viewport
+    bookActiveViewport.value.width = getViewport.value.width;
+    bookActiveViewport.value.height = getViewport.value.height;
     // set new book title and author
     bookTitle.value = pdfReaderName.value;
     bookAuthor.value = "";
@@ -83,8 +92,12 @@ const prepareBookForLabrary = () => {
   }, 500);
   // change book design for pdf-reader
   setTimeout(() => {
-    // set default book width and height
+    // set default state width and height
     store.state.viewport = { width: 500, height: 600 };
+    // set book width and height
+    bookActiveViewport.value.width = getViewport.value.width;
+    bookActiveViewport.value.height = getViewport.value.height;
+
     // set new book title and author
     bookTitle.value = "Writer Labs"; // todo: dinamic title
     bookAuthor.value = "Evan You"; // todo: dinamic author
@@ -106,29 +119,29 @@ const prepareBookForLabrary = () => {
     :title="!bookIsOpen ? 'Open Writer Labs' : ''"
     class="book closed-book relative cursor-pointer h-[700px] w-[600px] transition duration-500 ease-in-out"
     :style="{
-      width: getViewport.width + 'px',
-      height: getViewport.height + 'px',
+      width: bookActiveViewport.width + 'px',
+      height: bookActiveViewport.height + 'px',
       marginLeft: bookIsOpen ? getViewport.width + 'px' : auto,
     }"
   >
     <div
-      class="back book-page bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14]"
+      class="back book-page book-page-transition bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14]"
     ></div>
     <div
-      class="page6 book-page bg-page"
+      class="page6 book-page book-page-transition bg-page"
       :class="{ '!flex items-center justify-center': pdfReaderActive }"
     >
       <Page6 />
     </div>
-    <div class="page5 book-page bg-page-special p-0">
+    <div class="page5 book-page book-page-transition bg-page-special p-0">
       <Page5 />
     </div>
-    <div class="page4 book-page bg-page"></div>
-    <div class="page3 book-page bg-page-special"></div>
-    <div class="page2 book-page bg-page"></div>
-    <div class="page1 book-page bg-page-special"></div>
+    <div class="page4 book-page book-page-transition bg-page"></div>
+    <div class="page3 book-page book-page-transition bg-page-special"></div>
+    <div class="page2 book-page book-page-transition bg-page"></div>
+    <div class="page1 book-page book-page-transition bg-page-special"></div>
     <div
-      class="front book-page bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14] flex flex-col justify-center hover:shadow-2xl shadow-blue-900"
+      class="front book-page book-page-transition bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14] flex flex-col justify-center hover:shadow-2xl shadow-blue-900"
     >
       <!-- bg-gradient-to-r from-[#d2383b] to-[#850C14] via-[#850C14] -->
       <BookTitle :title="bookTitle" :author="bookAuthor" />

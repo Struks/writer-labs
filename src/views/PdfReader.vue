@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, inject, onMounted, watch, onUpdated } from "vue";
+import { ref, computed, inject, onMounted, watch } from "vue";
 
 const store = inject("store");
 // props
